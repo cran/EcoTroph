@@ -1,0 +1,10 @@
+export(check.table,create.ETdiagnosis,create.ETmain,create.smooth,plot_ETdiagnosis,plot_smooth,plot_Transpose,
+plot_ETmain,read.ecopath.model,saturation,Transpose)
+
+
+importFrom(XML,xmlTreeParse)
+importFrom(XML,xmlRoot)
+importFrom(XML,xmlName)
+importFrom(XML,xmlSApply)
+importFrom(XML,xmlValue)
+
