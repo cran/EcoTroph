@@ -1,4 +1,4 @@
-c8bbe670668e881a552a9e64e811ce19 *DESCRIPTION
+a751c47e4463a8c24eb4f180ea347054 *DESCRIPTION
 575c2f87d93f66363cdb2c6b842592d8 *EcoTroph.pdf
 62170fd6724b4d73c5707952c1b7547e *NAMESPACE
 275a2e270845a4343f6110cd256d21c2 *R/Transpose.R
@@ -7,10 +7,10 @@ f954631d091e26a01515440a6814f4e7 *R/create.ETdiagnosis.R
 8b97e48cd47e28f355b3bba4e1ca8428 *R/create.ETmain.R
 b6bb77b4b30479a94f31aa77d664208f *R/create.smooth.R
 b00b86720f6fb1c630e5ecfe129d7a59 *R/plot_ETdiagnosis.R
-37056b52c39c430549b726097a8e93c4 *R/plot_ETmain.R
-60de4804f1ff0bc76cd24daca041ae0d *R/plot_Transpose.R
+cdcc7ada425ad20b6c09211ccd831b69 *R/plot_ETmain.R
+c13d8962124fa374745bf023f44f4300 *R/plot_Transpose.R
 5f30b3b65435471fb8942d0c87d56e2b *R/plot_smooth.R
-c9c59615fb514682a0cdf355c13329c7 *R/read.ecopath.model.R
+c971e3e2832bfff7e86b2e9d24bdbef2 *R/read.ecopath.model.R
 46882f41dea6571f1aef50e76bc78265 *R/saturation.R
 5b9853b28b9132309f43da86e409c8b9 *data/ecopath_guinee.rda
 442c6fdcbff3153856642b787738e947 *man/Transpose.Rd

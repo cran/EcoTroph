@@ -6,12 +6,12 @@ options(warn=-1)
 
 plot_Transpose(m$biomass,log,title="Biomasses")
 readline()
-plot_Transpose(m$biomass_acc,log,title="Accessible Biomasses")
+plot_Transpose(m$biomass_acc,title="Accessible Biomasses")
 
 for (pecheries in names(m$Y))
 {
 readline()
-plot_Transpose(m$Y[[paste(pecheries)]],log,title=paste(pecheries,": Catch per fishing fleet"))
+plot_Transpose(m$Y[[paste(pecheries)]],title=paste(pecheries,": Catch per fishing fleet"))
 }
 readline()
 opar=par(no.readonly=TRUE)

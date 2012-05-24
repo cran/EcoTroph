@@ -38,7 +38,7 @@ if (!is.null(dim(catches_tmp2)))
 
 ecopath<-data.frame(ecopath,as.data.frame(catches_tmp2[1:length(rownames(ecopath)),]))
 }
-return (ecopath)
+return (ecopath[!(ecopath$group_name==''),])
 }
 }
 
