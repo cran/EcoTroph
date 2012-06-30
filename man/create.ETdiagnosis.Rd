@@ -8,7 +8,7 @@ ET-Transpose allows to obtain a picture of an ecosystem under a given fishing mo
 }
 \usage{
 create.ETdiagnosis(ET_Main, Mul_eff = NULL, Beta = NULL, 
-TopD = NULL, FormD = NULL)
+TopD = NULL, FormD = NULL, TLpred = NULL)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -27,6 +27,10 @@ is a coefficient expressing the top-down control, the fraction of the natural mo
   \item{FormD}{
 is a shape parameter, varying between 0 and 1, which defines the functional relationship between prey and predators. The value 1 relates to a situation where predators abundance has a linear effect on the speed of the flow of their preys.
 }
+  \item{TLpred}{
+TLpred, is the trophic level at which you consider the predator trophic classes start. The default value is 3.5.
+}
+
 }
 
 \value{
