@@ -1,5 +1,6 @@
-plot_ETdiagnosis_isopleth=function(x,fleet1=NULL,fleet2=NULL,var=NULL,n.level=NULL,relative=NULL,name.fleet1=NULL,name.fleet2=NULL,color=NULL){
+plot_ETdiagnosis_isopleth=function(x,fleet1=NULL,fleet2=NULL,var=NULL,n.level=NULL,relative=NULL,name.fleet1=NULL,name.fleet2=NULL,color=NULL,ask=interactive()){
  diagn.list<-x
+par(ask=ask)
  # diagn.list=Liste#; fleet1='catch.1';fleet2='catch.2'
  # var=NULL;levels=NULL;name.fleet1=NULL;name.fleet2=NULL;color=NULL;relative=NULL;n.level=NULL
   fleet.of.interest=diagn.list[['fleet.of.interest']]
@@ -109,7 +110,7 @@ plot_ETdiagnosis_isopleth=function(x,fleet1=NULL,fleet2=NULL,var=NULL,n.level=NU
     # save matrix
     row.names(M)=mf;colnames(M)=mf
     var.mat[[v]]=M
-  readline()
+  
     par(mar=c(5, 4.5, 4, 1))
    #x11()
     if(is.null(fleet.of.interest)){v.=v}else{if(!v%in%c('Y_fleet1','Y_fleet2','R_Y_fleet1','R_Y_fleet2','TL_Y_fleet1','TL_Y_fleet2')){v.=v}else{

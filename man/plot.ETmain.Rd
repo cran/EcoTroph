@@ -8,7 +8,7 @@ Plot ET Main
 This function enables the display of the principle plots resulting from the create.ETmain function: Biomass Trophic Spectra, Accessible Biomass Trophic Spectra, Catch by fleet Trophic spectra, Total Catch Trophic Spectra and two summary plots.  
 }
 \usage{
-\method{plot}{ETmain}(x,scale1=NULL,scale2=NULL,scale3=NULL,...)
+\method{plot}{ETmain}(x,scale1=NULL,scale2=NULL,scale3=NULL,ask=interactive(),...)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -25,6 +25,10 @@ defines the scale of the Accessible Biomass plots y axis: can be log or not.
   \item{scale3}{
 defines the scale of the Catch by fleet plots y axis: can be log or not.
 }
+\item{ask}{
+default value is interactive. Parameter to wait for the user to plot each graph.
+}
+
 \item{\dots}{plot other arguments}
 }
 \value{

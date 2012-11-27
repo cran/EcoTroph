@@ -1,4 +1,4 @@
-633491ec30fe2a3596ab18c3617da471 *DESCRIPTION
+eefc5664b2c4a1ac35d348d568a487f2 *DESCRIPTION
 575c2f87d93f66363cdb2c6b842592d8 *EcoTroph.pdf
 2208678a1c46ce7fd412acac7dc465c6 *NAMESPACE
 7dd25cfa051def9f30c0c9dc43c28149 *R/E_MSY_0.1.R
@@ -9,12 +9,12 @@ b68bfa35ddffcfb5cc9e286692d05d2c *R/convert.list2tab.R
 0bf0243a84df1a4b86509e0c29cb3747 *R/create.ETmain.R
 2cd16a0c31dc5ec1582bdabe427f3419 *R/create.smooth.R
 a6ba316cdcd88f44a0300de5d617f518 *R/mf.diagnosis.R
-06180b5fca65a5f2903ba8f3d9a1a7ac *R/plot.ETdiagnosis.R
-6662a34f38951e321b7d6556575d92a1 *R/plot.ETmain.R
+02d8896b957ad68f2edc62206f398103 *R/plot.ETdiagnosis.R
+88ccdf5cf5186c0e6970acc652e24643 *R/plot.ETmain.R
 f05e1f01565bc2184507c979c486cfda *R/plot.Transpose.R
 241c0f9fa5e1203254c97f8f5f9b1879 *R/plot.smooth.R
 d654d7c41b9a133265dea955e6649488 *R/plot_ETdiagnosis.R
-6765e5c1e3179a41dea457d8419c1d28 *R/plot_ETdiagnosis_isopleth.R
+1fe20a27f7746cb8aa83f44349b5c29b *R/plot_ETdiagnosis_isopleth.R
 9cc1c692a87ef01fd149dd61495b7255 *R/plot_ETmain.R
 a35e3517ad31a4523155b5d1b7f9c569 *R/plot_Transpose.R
 4da2e6bebde5164e255443a62aba1e0c *R/plot_smooth.R
@@ -30,9 +30,9 @@ fe9494ad4c48ac684a9396ce804aeff8 *man/convert.list2tab.Rd
 e473380a32f80ebb2b612965898c39dc *man/create.ETmain.Rd
 88f5afbe91bbaf59e2c5fa34ea6fdcb6 *man/create.smooth.Rd
 01878c4dc9bd6d79932be32508baa0e4 *man/ecopath_guinee.Rd
-87d43639bf7dcdde78b985c0f489d974 *man/plot.ETdiagnosis.Rd
-0462487860ffb813808ea227527f2a7c *man/plot.ETdiagnosis_isopleth.Rd
-d23c0a54bed91cc8a598332016b371d6 *man/plot.ETmain.Rd
+4bddc755b6c5ed77dd2f75f8684a712e *man/plot.ETdiagnosis.Rd
+8c6e39a6e6720ba4ee28f75bbcdcaa91 *man/plot.ETdiagnosis_isopleth.Rd
+4e33a71b0349097ea0b5ad830eb74475 *man/plot.ETmain.Rd
 60baf1326b327a2aa21a50b1eea01335 *man/plot.Transpose.Rd
 79411f335d394f26858a619511e51df8 *man/plot.smooth.Rd
 5aa20f0287f69ebf537d0ef0f56b258d *man/read.ecopath.model.Rd

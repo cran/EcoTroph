@@ -1,22 +1,20 @@
 plot.ETmain <-
-function(x,scale1=NULL,scale2=NULL,scale3=NULL,...){
+function(x,scale1=NULL,scale2=NULL,scale3=NULL,ask=interactive(),...){
 m<-x
+par(ask=ask)
 options(warn=-1)
 #the scale parameter can be log or not for the y axis
 #library(RColorBrewer)
 
 plot(m$biomass,title="Biomasses",scale=scale1)
-readline()
 plot(m$biomass_acc,title="Accessible Biomasses",scale=scale2)
 
 for (pecheries in names(m$Y))
 {
-readline()
 plot(m$Y[[paste(pecheries)]],title=paste(pecheries),scale=scale3)
 }
 
 ##Plot "Total catch"
-readline()
 
 opar=par(no.readonly=TRUE)
 par(mfrow=c(2,1))
@@ -47,7 +45,6 @@ axis(4)
 par(opar)
 
 ##Summary plots
-readline()
 opar=par(no.readonly=TRUE)
 par(mfrow=c(2,1))
 par(mar=c(5,5,3,10))
@@ -65,14 +62,12 @@ par(opar)
 
 # Kinetic
 #m=create.ETmain(ecopath_guinee)
-readline()
 opar=par(no.readonly=TRUE)
 par(mfrow=c(1,1),mar=c(5, 4, 4, 2)+.1)
 plot(row.names(m$ET_Main),m$ET_Main[,'Kin'],type='l',xlim=c(2,5),xlab="TL",ylab=NA,lwd=2,main="Kinetic",col='red',...)
 par(opar)
 
 # Selectivity
-readline()
 opar=par(no.readonly=TRUE)
 plot(row.names(m$ET_Main),m$ET_Main[,'Selec'],type='l',xlim=c(2,5),xlab="TL",ylab=NA,lwd=2,main="Selectivity",col='red',...)
 options(warn=-1)

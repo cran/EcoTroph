@@ -8,7 +8,7 @@ Diagnosis Isopleth Plot Function
 This function enables to picture the mixed impacts of changes in fishing effort for two fleets (or groups of fleets).
 }
 \usage{
-plot_ETdiagnosis_isopleth(x,fleet1,fleet2,var=NULL,n.level=NULL,relative=NULL,name.fleet1=NULL,name.fleet2=NULL,color=NULL)
+plot_ETdiagnosis_isopleth(x,fleet1,fleet2,var=NULL,n.level=NULL,relative=NULL,name.fleet1=NULL,name.fleet2=NULL,color=NULL,ask=interactive())
 }
 %- maybe also 'usage' for other objects documented here.???
 \arguments{
@@ -39,7 +39,9 @@ is a character string used to implement y-axis names. By default name.fleet2='fl
   \item{color}{
 is a vector of colours, the length of this vector should be equal to the value of levels. By default, color=rainbow(n=levels).
 }
-
+\item{ask}{
+default value is interactive. Parameter to wait for the user to plot each graph.
+}
 }
 \details{
 Fleets' names used in the arguments 'fleet1' and 'fleet2' are the catch column names of ecopath input dataframe (e.g. 'catch.1' or 'catch.ind').

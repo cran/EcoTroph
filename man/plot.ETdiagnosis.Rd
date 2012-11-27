@@ -8,7 +8,7 @@ Plot Diagnosis Function
 This function enables the creation of the principle graphics resulting from the create.ETdiagnosis function.  
 }
 \usage{
-\method{plot}{ETdiagnosis}(x,scale=NULL,maxrange=NULL,...)
+\method{plot}{ETdiagnosis}(x,scale=NULL,maxrange=NULL,ask=interactive(),...)
 }
 %- maybe also 'usage' for other objects documented here.???
 \arguments{
@@ -20,6 +20,9 @@ is the scale parameter of the Biomass Trophic Spectra, can be log or by default 
 }
 \item{maxrange}{
 is the maximum TL (Trophic Level) for the x-axis of the plots. By default maxrange = 5.5.
+}
+\item{ask}{
+default value is interactive. Parameter to wait for the user to plot each graph.
 }
 \item{\dots}{plot other arguments}
 }

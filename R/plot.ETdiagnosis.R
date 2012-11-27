@@ -1,6 +1,8 @@
-plot.ETdiagnosis <-function(x,scale=NULL,maxrange=NULL,...){#,fleet=NULL,fix.mE=NULL
+plot.ETdiagnosis <-function(x,scale=NULL,maxrange=NULL,ask=interactive(),...){#,fleet=NULL,fix.mE=NULL
 
 diagn.list<-x
+par(ask=ask)
+
 # diagn.list=Liste;scale='log';maxrange=NULL#;fix.mE=NULL;fleet=NULL
   fleet.of.interest=diagn.list[['fleet.of.interest']]
   #diagn.list=diagn.list[-length(diagn.list)]
@@ -62,7 +64,6 @@ lines(rownames(m1),m1[,"R_TOT_B_acc"],type='l',col=3)
 lines(rownames(m1),m1[,"R_Pred_B"],type='l',col=1)
 legend(max(mf)+.5,ymax,legend = c("R_TOT_B","R_TOT_B_acc","R_Pred_B"), bg = 'gray90',col=c(2,3,1),pch=1,xpd=NA)
 
-readline()
 #x11()# relative Catches
 par(mar=c(5,3,1,11))
 
@@ -81,7 +82,6 @@ for(j in 1:n.fleet){lines(as.numeric(mf),m.[,(2+j)],col=4+j)}
 leg=paste('R_Y_',Nam.fleet,sep='')
 legend(max(mf)+.5,ymax,legend = c("R_Y",leg,"R_Pred_Y"), bg = 'gray90',col=c(4:(4+n.fleet),3),pch=1,xpd=NA)
 
-readline()
 # mean TL in biomass
 m2=data.frame(matrix(data=NA,ncol=3,nrow=length(mf)))
 row.names(m2)=mf;colnames(m2)=c("TL_TOT_B","TL_TOT_B_acc","TL_Y")
@@ -95,7 +95,6 @@ plot(rownames(m2),m2[,"TL_TOT_B"],col=2,type='l',ylim=c(1,4),xlab="mE",ylab="TL"
 lines(rownames(m2),m2[,"TL_TOT_B_acc"],type='l',col=4)
 legend(max(mf)+.5,4,legend = c("TL_TOT_B","TL_TOT_B_acc"), bg = 'gray90',col=c(2,4),pch=1,xpd=NA)
 
-readline()
 #x11() # mean TL in catches
 par(mar=c(5,4.5,1,10))
 plot(rownames(m2),m2[,"TL_Y"],col=12,type='l',ylim=c(1,4),xlab="mE",ylab="TL",...)
@@ -123,7 +122,6 @@ for(j in 1:n.fleet){lines(rownames(m2),m2.[,j],col=12+j)}
   leg=c("TL_Y",paste('TL_Y_',Nam.fleet,sep=''))
   legend(max(mf)+.5,4,legend = leg, bg = 'gray90',col=c(12,13:(13+n.fleet-1)),pch=1,xpd=NA)}
 
-readline()
 m3=data.frame(matrix(data=NA,ncol=length(mf),nrow=length(TL_out)))
 colnames(m3)=mf;row.names(m3)=TL_out
 for(i in 1:length(mf)){m3[,i]=ll[[as.character(mf[i])]][['BIOM_MF']]}
@@ -136,7 +134,6 @@ for (i in 2:length(colnames(m3)))
 lines(TL_out,m3[,i],col=i,type='l')
 legend(maxrange+.5,ymax,legend = colnames(m3), bg = 'gray90',col=c(1:length(colnames(m3))),pch=1,xpd=NA)
   
-readline()
 
 tl=seq(2.5,5,.5)
 round.tl=function(x,TL_out){dif=abs(as.numeric(TL_out)-x);names(dif)=TL_out;return(names(dif[dif==min(dif)[1]]))}
@@ -157,7 +154,6 @@ plot(colnames(mm),mm[1,],col=1,type='l',ylim=c(0,ymax),xlab="mE",ylab="B/Bref")
 for (i in 2:length(rownames(mm)))lines(colnames(mm),mm[i,],col=i,type='l')
 legend(max(mf)+.5,ymax,legend = rownames(mm), bg = 'gray90',col=c(1:length(rownames(mm))),pch=1,xpd=NA)
     
-readline()
 
 refY=Ref$Catches.tot[names(Ref$Catches.tot)%in%tl.]
 my=data.frame(matrix(data=NA,ncol=6,nrow=length(mf)));row.names(my)=mf;colnames(my)=tl.
@@ -172,7 +168,6 @@ plot(row.names(my),my[,1],col=1,type='l',ylim=c(0,ymax),xlab="mE",ylab="Y/Yref p
 for (i in 2:length(colnames(my)))lines(row.names(my),my[,i],col=i,type='l')
 legend(max(mf)+.5,ymax,legend = colnames(my), bg = 'gray90',col=c(1:length(colnames(my))),pch=1,xpd=NA)
 
-readline()# total catches per TL 
  
 m4=data.frame(matrix(data=NA,ncol=length(mf),nrow=length(TL_out)))
 colnames(m4)=mf;row.names(m4)=TL_out
@@ -188,7 +183,7 @@ legend(maxrange+.5,ymax,legend = colnames(m3), bg = 'gray90',col=c(1:length(coln
 
 if(!n.fleet==1){
 for(j in 1:n.fleet){
-readline() # catches per TL and per fleet
+# catches per TL and per fleet
 
 m6=data.frame(matrix(data=NA,ncol=length(mf),nrow=length(TL_out)))
 colnames(m6)=mf;row.names(m6)=TL_out
@@ -203,7 +198,6 @@ for (i in 1:(length(colnames(m6))-1))
 legend(maxrange+.5,ymax,legend = colnames(m3), bg = 'gray90',col=c(1:length(colnames(m6))),xpd=NA,pch=1)
 }
 }
-#readline()
   
 #m5=data.frame(matrix(data=NA,ncol=length(mf),nrow=length(TL_out)))
 #colnames(m5)=mf;row.names(m5)=TL_out
