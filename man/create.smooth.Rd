@@ -17,7 +17,7 @@ shift=NULL,smooth_param=NULL)
 is the table returned by the Ecopath routine. The different varaiables are the group name, its trophic level, biomass, production and consumption ratio, catches, omnivory index and accessibility (fraction of the group that can be catch supposing an infinite fishing effort).
 }
   \item{smooth_type}{
-defines the type of sigma calculation for the lognormal distribution. The value for this parameter is 1, 2 or 3. By default smooth_type=1, this defines a constant sigma. By putting smooth_type=2, the user has the possibility to put a sigmaLN=smooth_param*ln(TL-0.05), with the parameter smooth_param=0.07 and shift=0.95 by default. Smooth_type=3 corresponds to the use of the calculated Omnivory Index (OI) as the sigmaLN. 
+defines the type of sigma calculation for the lognormal distribution. The value for this parameter is 1, 2 or 3. By default smooth_type=1, this defines a constant sigma. By putting smooth_type=2, the user has the possibility to put a sigmaLN=smooth_param*ln(TL-0.05), with the parameter smooth_param=0.07 and shift=0.95 by default. Smooth_type=3 corresponds to the use of Omnivory Index (OI) in sigmaLN calculation (sigmaLN=OI/TL). 
 }
   \item{sigmaLN_cst}{
 defines the value of the constant sigma of the lognormal distribution in case of smooth_type=1. By default, sigmaLN_cst=0.12.  
@@ -34,7 +34,7 @@ sigmaLN(TL)=smooth_param*ln(TL-0.05).
 }
 }
 \details{
-The user have the possibility to define sigma for each trophic group and also adjust the LN distribution with the smooth_type, sigmaLN_cst, smooth_param, shift and pas parameters. Different choises are available : a constant sigma, a function defined sigma , or the sigma is equal to the omnivory index.
+The user have the possibility to define sigma for each trophic group and also adjust the LN distribution with the smooth_type, sigmaLN_cst, smooth_param, shift and pas parameters. Different choises are available : a constant sigma, a function defined sigma , or the sigma is equal to omnivory index divided by associated TL.
 }
 \value{
 create.smooth returns a table of the TL distribution within a trophic class. This table enables the calculation of Trophic Spectra. 

@@ -1,9 +1,9 @@
 Package: EcoTroph
 Type: Package
 Title: EcoTroph modelling support
-Version: 1.4
-Date: 2012-06-30
-Author: J. Guitton and M. Colleter, D. Gascuel
+Version: 1.5
+Date: 2012-11-27
+Author: J. Guitton and M. Colleter, D. Gascuel, Paul Gatti
 Maintainer: Jerome Guitton <jerome.guitton@agrocampus-ouest.fr>
 URL: http://sirs.agrocampus-ouest.fr/EcoTroph/
 Description: EcoTroph is an approach and software for modelling marine
@@ -22,6 +22,7 @@ Description: EcoTroph is an approach and software for modelling marine
 License: GPL
 LazyLoad: yes
 Depends: XML
-Packaged: 2012-07-04 10:12:56 UTC; jerome
+Packaged: 2013-03-12 16:58:21 UTC; jerome
+NeedsCompilation: no
 Repository: CRAN
-Date/Publication: 2012-07-09 08:53:01
+Date/Publication: 2013-03-12 18:15:57

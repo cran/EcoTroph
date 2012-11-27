@@ -1,6 +1,9 @@
-export(check.table,create.ETdiagnosis,create.ETmain,create.smooth,plot_ETdiagnosis,plot_smooth,plot_Transpose,
-plot_ETmain,read.ecopath.model,saturation,Transpose)
+export(check.table,create.ETdiagnosis,create.ETmain,create.smooth,read.ecopath.model,saturation,Transpose,E_MSY_0.1,plot_ETdiagnosis_isopleth,convert.list2tab)
 
+S3method(plot,Transpose)
+S3method(plot,smooth)
+S3method(plot,ETdiagnosis)
+S3method(plot,ETmain)
 
 importFrom(XML,xmlTreeParse)
 importFrom(XML,xmlRoot)

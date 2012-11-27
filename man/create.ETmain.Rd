@@ -33,7 +33,7 @@ is a parameter of the create.smooth function. It defines the slope of the log-li
 }
 }
 \value{
-This function returns the ET Main table and some intermediate matrix : biomass, accessible biomass, flowP and a list of matrix corresponding to the catch of the different fisheries.
+This function returns a list containing: the ET Main table, some intermediate matrix (biomass, accessible biomass, flowP...) and a list of matrix corresponding to the catch of the different fisheries.
 }
 \references{
 Gascuel et al. (2009) EcoTroph (ET): a trophic level based software for assessing the impacts of fishing on aquatic ecosystems.

@@ -43,7 +43,7 @@ if (is.null(shift_init)) shift <- 0.95               ##default values
 
 if (smooth_type==3)
 {
-sigmaLN <- ecopath$OI
+sigmaLN <- ecopath$OI/Troph_round
 if (is.null(shift_init)) shift <- 0  
 }
 
@@ -81,7 +81,7 @@ tab_smooth[is.na(tab_smooth)]<-0
 sumcol <- colSums(tab_smooth)
 for (i in 1:length(ecopath$group_name))
 tab_smooth[,i]<- tab_smooth[,i]/sumcol[i] 
-
+class(tab_smooth)<-"smooth"
 return(tab_smooth)
 }
 }

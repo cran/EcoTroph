@@ -1,20 +1,21 @@
-\name{plot_smooth}
-\alias{plot_smooth}
+\name{plot.smooth}
+\alias{plot.smooth}
 %- Also NEED an '\alias' for EACH other topic documented here.???
 \title{
 Plot Smooth Function
 }
 \description{
-plot_smooth is used to plot a smooth function. This function enables the user to see the TL distribution around its mean trophic level.
+plot.smooth is used to plot a smooth function. This function enables the user to see the TL distribution around its mean trophic level.
 }
 \usage{
-plot_smooth(tab_smooth)
+\method{plot}{smooth}(x,...)
 }
 %- maybe also 'usage' for other objects documented here.???
 \arguments{
-  \item{tab_smooth}{
+  \item{x}{
 is the table returned by the create.smooth function.
 }
+\item{\dots}{plot other arguments}
 }
 \value{
 The function returns a plot of the Smooth with the TL classes in absisse.
@@ -33,8 +34,8 @@ create.smooth function to create the Smooth, Transpose to calculate the data tra
 }
 \examples{
 data(ecopath_guinee)
-plot_smooth(create.smooth(ecopath_guinee))
-plot_smooth(create.smooth(ecopath_guinee,smooth_type=2))
+plot(create.smooth(ecopath_guinee))
+plot(create.smooth(ecopath_guinee,smooth_type=2))
 
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the

@@ -1,26 +1,27 @@
-\name{plot_Transpose}
-\alias{plot_Transpose}
+\name{plot.Transpose}
+\alias{plot.Transpose}
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{
 Plot Transpose Function Results
 }
 \description{
-plot_Transpose returns the principal graphics of the Transpose function : the different Trophic Spectra (CTS, BTS...) and other graphic representations.
+This function returns the two principal plots of the Transpose function : a plot by group and the associated Trophic Spectra (CTS, BTS...).
 }
 \usage{
-plot_Transpose(tab_Trans, scale = NULL, title = NULL)
+\method{plot}{Transpose}(x,title = NULL,scale = NULL,...)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
-  \item{tab_Trans}{
+  \item{x}{
 is the table returned by the Transpose function.
-}
-  \item{scale}{
-defines the scale of the graphic y axis : can be log or not.
 }
   \item{title}{
 defines the title of the graph.
 }
+  \item{scale}{
+defines the scale of the graphic y axis: can be log or not.
+}
+\item{\dots}{plot other arguments}
 }
 \value{
 The function returns the principal graphics of the Transpose function : the different Trophic Spectra (CTS, BTS...) and other graphic representations.
@@ -39,9 +40,8 @@ create.smooth function to create the Smooth, plot_smooth to plot the smooth func
 }
 \examples{
 data(ecopath_guinee)
-plot_Transpose(Transpose(create.smooth(ecopath_guinee),ecopath_guinee,"biomass"),log)
-plot_Transpose(Transpose(create.smooth(ecopath_guinee),ecopath_guinee,"catch.1")
-,title="Small Scale Fishery Catch")
+plot(Transpose(create.smooth(ecopath_guinee),ecopath_guinee,"biomass"),scale=log)
+plot(Transpose(create.smooth(ecopath_guinee),ecopath_guinee,"catch.1"),title="Small Scale Fishery Catch")
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.

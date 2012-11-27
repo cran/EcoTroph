@@ -1,173 +1,149 @@
-create.ETdiagnosis <- function (ET_Main, Mul_eff = NULL, Beta = NULL, TopD = NULL, FormD = NULL, TLpred = NULL) 
-{
-if (is.null(Mul_eff)) 
-Mul_eff <- c(0, 0.2, 0.4, 0.7, 1, 1.5, 2, 2.5, 3, 4, 5)
-if (is.null(Beta)) 
-Beta <- 0.1
-if (is.null(TopD)) 
-TopD <- 0.2
-if (is.null(FormD)) 
-FormD <- 0.5
-if (is.null(TLpred)) 
-TLpred <- 3.5
-
-TL_out <- as.numeric(rownames(ET_Main))
-
-#Initialization
+create.ETdiagnosis <- function(data, Mul_eff = NULL, Group = NULL, fleet.of.interest = NULL, same.mE = NULL, B.Input=NULL,
+                      Beta = NULL, TopD = NULL, FormD = NULL, TLpred = NULL, Forag.A = NULL, Kfeed = NULL, Ponto = NULL) 
+{ 
+#Group=NULL;Mul_eff = NULL;same.mE=T;B.Input=NULL; Beta = NULL; TopD = NULL; FormD = NULL; TLpred = NULL;data=create.ETmain(ecopath_guinee);Kfeed = NULL; Ponto = NULL; Forag.A = F
+#Group=c('Barracudas+','Carangids')
+  #data=create.ETmain(ecopath_guinee,pas=0.1);fleet.of.interest='catch.1'
+  #data=create.ETmain(ecopath_guinee);fleet.of.interest=NULL
+  ET_Main=data$ET_Main
   
-TEMP_PB <- array(dim = c(length(TL_out), length(Mul_eff)), dimnames = list(TL_out, Mul_eff))
-for (compteur in 1:length(Mul_eff)) TEMP_PB[, compteur] <- ET_Main[, "Fish_mort"]
-TEMP_PB <- ET_Main[, "Kin"] - ET_Main[, "Fish_mort"] + sweep(TEMP_PB, 2, Mul_eff, FUN = "*")
-
-TEMP_PB_acc <- array(dim = c(length(TL_out), length(Mul_eff)), dimnames = list(TL_out, Mul_eff))
-for (compteur in 1:length(Mul_eff)) TEMP_PB_acc[, compteur] <- ET_Main[, "Fish_mort_acc"]
-TEMP_PB_acc <- ET_Main[, "Kin_acc"] - ET_Main[, "Fish_mort_acc"] + sweep(TEMP_PB_acc, 2, Mul_eff, FUN = "*")
+  TL_out <- as.numeric(rownames(ET_Main))
+  names(TL_out)=1:length(TL_out)
+  n.TL=length(TL_out)
   
-FLOW_MF <- array(dim = c(length(TL_out), length(Mul_eff)), dimnames = list(TL_out, Mul_eff))
-for (compteur in 1:length(Mul_eff)) FLOW_MF[, compteur] <- ET_Main[, "FL_P"]
+  #Initialization
   
-FLOW_MF_acc <- array(dim = c(length(TL_out), length(Mul_eff)), dimnames = list(TL_out, Mul_eff))
-for (compteur in 1:length(Mul_eff)) FLOW_MF_acc[, compteur] <- ET_Main[, "FL_P_acc"]
-
-BIOM_MF <- array(dim = c(length(TL_out), length(Mul_eff)), dimnames = list(TL_out, Mul_eff))
-for (compteur in 1:length(Mul_eff)) BIOM_MF[, compteur] <- ET_Main[, "B"]
+  # determinate the number of fleets
+  fleet=names(data$Y) ; n.fleet=length(fleet)
   
-BIOM_MF_acc <- array(dim = c(length(TL_out), length(Mul_eff)), dimnames = list(TL_out, Mul_eff))
-for (compteur in 1:length(Mul_eff)) BIOM_MF_acc[, compteur] <- ET_Main[, "B_acc"]
-  
-PB_MF <- TEMP_PB
-PB_MF_acc <- TEMP_PB_acc
-
-SC <- 3
-SC2 <- 3
-
-#Iteration
- 
-while (SC2 != 0) {
-
-BIOM_MF <- FLOW_MF/PB_MF
-BIOM_MF <- BIOM_MF[-1, ] ##sum of BIOM_MF for TL>=2 in the biomass input control equation
-
-BIOM_MF_acc <- FLOW_MF_acc/PB_MF_acc
-
-if (ET_Main[1, "B_acc"]==0){
-cas <- 1
-FLOW_MF_TMP <- FLOW_MF[1, ]
-
-FLOW_MF[1, ] <- (1 - Beta) * ET_Main[1, "FL_P"] + Beta * ET_Main[1, "FL_P"] * (apply(BIOM_MF[, ], 2, sum)/sum(BIOM_MF[, "1"]))
-for (compteur in 2:length(rownames(FLOW_MF))) {
-for (compteur2 in 1:length(colnames(FLOW_MF))) {        
-FLOW_MF[compteur, compteur2] <- FLOW_MF[(compteur - 1), compteur2] * exp(-(ET_Main[(compteur - 1), "N_loss"] + as.numeric(colnames(FLOW_MF))[compteur2] * ET_Main[compteur - 1, "Fish_mort"]/PB_MF[compteur - 1, compteur2]) * (as.numeric(rownames(FLOW_MF)[compteur]) - as.numeric(rownames(FLOW_MF)[compteur - 1])))
-}
-}
-
-FLOW_MF_acc[2, ] <- ET_Main[2, "FL_P_acc"] * FLOW_MF[2,]/FLOW_MF[2,"1"]
-for (compteur in 3:length(rownames(FLOW_MF))) {
-for (compteur2 in 1:length(colnames(FLOW_MF))) {
-FLOW_MF_acc[compteur, compteur2] <- FLOW_MF_acc[(compteur - 1), compteur2] * exp(-(ET_Main[(compteur - 1), "N_loss_acc"] + as.numeric(colnames(FLOW_MF_acc))[compteur2] * ET_Main[compteur - 1, "Fish_mort"]/PB_MF_acc[compteur - 1, compteur2]/ET_Main[(compteur - 1), "Selec"]) * (as.numeric(rownames(FLOW_MF_acc)[compteur]) - as.numeric(rownames(FLOW_MF_acc)[compteur - 1])))
-}}
-}
-
-else {
-cas <- 2   
-FLOW_MF_TMP <- FLOW_MF[1, ]
-
-FLOW_MF[1, ] <- (1 - Beta) * ET_Main[1, "FL_P"] + Beta * ET_Main[1, "FL_P"] * (apply(BIOM_MF[, ], 2, sum)/sum(BIOM_MF[, "1"]))
-FLOW_MF_acc[1, ] <- ET_Main[1, "FL_P_acc"] * FLOW_MF[1, ]/FLOW_MF[1,"1"]
-for (compteur in 2:length(rownames(FLOW_MF))) {
-for (compteur2 in 1:length(colnames(FLOW_MF))) {
-FLOW_MF[compteur, compteur2] <- FLOW_MF[(compteur - 1), compteur2] * exp(-(ET_Main[(compteur - 1), "N_loss"] + as.numeric(colnames(FLOW_MF))[compteur2] * ET_Main[compteur - 1, "Fish_mort"]/PB_MF[compteur - 1, compteur2]) * (as.numeric(rownames(FLOW_MF)[compteur]) - as.numeric(rownames(FLOW_MF)[compteur - 1])))
-FLOW_MF_acc[compteur, compteur2] <- FLOW_MF_acc[(compteur - 1), compteur2] * exp(-(ET_Main[(compteur - 1), "N_loss_acc"] + as.numeric(colnames(FLOW_MF_acc))[compteur2] * ET_Main[compteur - 1, "Fish_mort"]/PB_MF_acc[compteur - 1, compteur2]/ET_Main[(compteur - 1), "Selec"]) * (as.numeric(rownames(FLOW_MF_acc)[compteur]) - as.numeric(rownames(FLOW_MF_acc)[compteur - 1])))
-}}
-}
-
-BIOM_MF <- FLOW_MF/PB_MF
-BIOM_MF_acc <- FLOW_MF_acc/PB_MF_acc
-
-PB_MF[1, ] <- (ET_Main[1, "Kin"] - ET_Main[1, "Fish_mort"]) * (1 + TopD * (apply(BIOM_MF[2:5, ], 2, sum)^FormD - sum(BIOM_MF[2:5, "1"])^FormD)/(sum(BIOM_MF[2:5, "1"])^FormD)) + Mul_eff * ET_Main[1, "Fish_mort"]
-
-if (cas==2){
-PB_MF_acc[1, ] <- (ET_Main[1, "Kin_acc"] - ET_Main[1, "Fish_mort_acc"]) * (1 + TopD * (apply(BIOM_MF[2:5, ], 2, sum)^FormD - sum(BIOM_MF[2:5, "1"])^FormD)/(sum(BIOM_MF[2:5, "1"])^FormD)) + Mul_eff * ET_Main[1, "Fish_mort_acc"]
-}
-
-for (compteur in 2:38) {
-PB_MF[compteur, ] <- (ET_Main[compteur, "Kin"] - ET_Main[compteur, "Fish_mort"]) * (1 + TopD * (apply(BIOM_MF[(compteur + 8):(compteur + 13), ], 2, sum)^FormD - sum(BIOM_MF[(compteur + 8):(compteur + 13), "1"])^FormD)/(sum(BIOM_MF[(compteur + 8):(compteur + 13), "1"])^FormD)) + Mul_eff * ET_Main[compteur, "Fish_mort"]
-PB_MF_acc[compteur, ] <- (ET_Main[compteur, "Kin_acc"] - ET_Main[compteur, "Fish_mort_acc"]) * (1 + TopD * (apply(BIOM_MF[(compteur + 8):(compteur + 13), ], 2, sum)^FormD - sum(BIOM_MF[(compteur + 8):(compteur + 13), "1"])^FormD)/(sum(BIOM_MF[(compteur + 8):(compteur + 13), "1"])^FormD)) + Mul_eff * ET_Main[compteur, "Fish_mort_acc"]
-}
+  if (is.null(same.mE)){same.mE <- FALSE}
+  if(!is.null(fleet.of.interest)){same.mE <- FALSE}
+  if (is.null(Mul_eff)){Mul_eff.=list()
+    for(i in 1:n.fleet){Mul_eff.[[i]]=c(0, 0.2, 0.4, 0.7, 1, 1.5, 2, 2.5, 3, 4, 5)}
+    #names(Mul_eff)=paste('mF',1:n.fleet,sep='')
+    if(same.mE){Mul_eff.=c(0, 0.2, 0.4, 0.7, 1, 1.5, 2, 2.5, 3, 4, 5)}
+  }else{Mul_eff.=list()
+      for(i in 1:n.fleet){Mul_eff.[[i]]=Mul_eff}
+      #names(Mul_eff)=paste('mF',1:n.fleet,sep='')
+      if(same.mE){Mul_eff.=Mul_eff} 
+  }
+  if (is.null(B.Input)){B.Input <- FALSE}
+  if (B.Input){Forag.A <- FALSE}# if biomass input control is implemented Foraging arena theory is not.
+  if (is.null(Beta)){Beta <- .2}
+  if (is.null(TopD)){TopD <- rep(.4,n.TL)}else{if(length(TopD)==1){TopD=rep(TopD,n.TL)}}
+  if (is.null(FormD)){FormD <- rep(.5,n.TL)}else{if(length(FormD)==1){FormD=rep(FormD,n.TL)}}
+  if (is.null(TLpred)){TLpred <- 3.5}
+  if (is.null(Forag.A)){Forag.A <- FALSE}
+  if (is.null(Kfeed)){Kfeed <- rep(5,n.TL)}else{if(length(Kfeed)==1){Kfeed=rep(Kfeed,n.TL)}}
+  if (is.null(Ponto)){Ponto <- rep(.3,n.TL)}else{if(length(Ponto)==1){Ponto=rep(Ponto,n.TL)}}
     
-for (compteur in 38:length(rownames(PB_MF))) {
-for (compteur2 in 1:length(Mul_eff)) {
-x <- as.numeric(rownames(PB_MF)[(compteur - 9):(compteur - 2)])
-y <- log(PB_MF[(compteur - 9):(compteur - 2), compteur2])
-reg <- coef(lm(y ~ x))
-PB_MF[compteur, compteur2] <- exp(reg[1] + reg[2] * as.numeric(rownames(PB_MF)[compteur]))
-y <- log(PB_MF_acc[(compteur - 9):(compteur - 2), compteur2])
-reg <- coef(lm(y ~ x))
-PB_MF_acc[compteur, compteur2] <- exp(reg[1] + reg[2] * as.numeric(rownames(PB_MF_acc)[compteur]))
+  if(B.Input & Forag.A){Forag.A=FALSE
+    cat('Foraging Arena Theory & Biomass input control cannot be implemented at the same time, Forag.A is repalced by F.')}
+    
+  # Compute reference (initial state) fishing mortality coefficients per fleet and per TL levels
+  Fish_mort_ref=list()
+  Fish_mort_acc_ref=list()
+  for(i in 1:n.fleet){
+    Fish_mort_ref[[fleet[i]]]=apply(data[['Y']][[fleet[i]]],1,sum)/ET_Main$B
+    Fish_mort_acc_ref[[fleet[i]]]=apply(data[['Y']][[fleet[i]]],1,sum)/ET_Main$B_acc
+  }
+  for(i in 1:n.fleet){Fish_mort_acc_ref[[i]][is.nan(Fish_mort_acc_ref[[i]])]=0}
+  
+  # Compute reference (initial state) fishing mortality coefficients per fleet,per TL levels and TL groups
+  if(!is.null(Group)){
+    Fish_mort_gp_ref=list()
+    Fish_mort_acc_gp_ref=list()
+    for(i in 1:n.fleet){
+      # Gasche et Gascuel (unpublished) (7) Fg,i,t=Yg,i,t/Bt
+      Fish_mort_gp_ref[[fleet[i]]]=data$Y[[fleet[i]]]/ET_Main$B
+      Fish_mort_gp_ref[[fleet[i]]][is.nan(Fish_mort_gp_ref[[fleet[i]]])]=0
+      Fish_mort_acc_gp_ref[[fleet[i]]]=data$Y[[fleet[i]]]/ET_Main$B_acc
+      Fish_mort_acc_gp_ref[[fleet[i]]][is.nan(Fish_mort_acc_gp_ref[[fleet[i]]])]=0
+    }
+  }
+  
+# create a list with for each combination of effort multipliers containing all variables (F,Flow,Biom,Kin)
+ 
+if(!same.mE){
+  ff=expand.grid(Mul_eff.)
+  if(is.null(fleet.of.interest)){
+    for(n in 1:n.fleet){
+      if(n==1){FF=ff[,n]}else{FF=paste(FF,'_',ff[,n],sep='')}}
+  }else{
+    colnames(ff)=c('interest','other')
+      for(n in 1:n.fleet){
+        if(fleet[n]%in%fleet.of.interest){ff.=ff[,'interest']}else{ff.=ff[,'other']}
+        if(n==1){FF=ff.}else{FF=paste(FF,'_',ff.,sep='')}}
+  }
+}else{
+  for(n in 1:n.fleet){
+    if(n==1){FF=Mul_eff.}else{FF=paste(FF,'_',Mul_eff.,sep='')}} 
 }
-}
-
-SC <- round(sum(PB_MF)/sum(TEMP_PB), 4)
-SC21 <- sum(FLOW_MF[1, ])/sum(FLOW_MF_TMP)
-SC2 <- round((sum(FLOW_MF[1, ]) - sum(FLOW_MF_TMP)) * 1000)
-cat("##")
-TEMP_PB <- PB_MF
-TEMP_PB_acc <- PB_MF_acc
-}
-
-#Indices calculation
-
-TOT_biomass <- apply(BIOM_MF[-1, ], 2, sum) #without TL=1 
-TOT_biomass_acc <- apply(BIOM_MF_acc[-1, ], 2, sum) #without TL=1
-Predat_biom <- apply(BIOM_MF[(which(rownames(BIOM_MF)==TLpred)):(length(BIOM_MF[, 1])),], 2, sum) 
-TOT_FL <- apply(FLOW_MF, 2, sum) 
-TOT_FL_acc <- apply(FLOW_MF_acc, 2, sum) 
-Predat_FL <- apply(FLOW_MF[(which(rownames(BIOM_MF)==TLpred)):(length(BIOM_MF[, 1])), ], 2, sum) 
-
-if (cas==1){
-Catches <- BIOM_MF_acc[-1,]
-Catches <- sweep(BIOM_MF_acc[-1,], 1, ET_Main[-1, "Fish_mort_acc"], FUN = "*")
-for (compteur in 1:length(Mul_eff)) {
-Catches[, compteur] <- Catches[, compteur] * Mul_eff[compteur]
-}
-}
-
-if (cas==2){
-Catches <- BIOM_MF_acc
-Catches <- sweep(BIOM_MF_acc, 1, ET_Main[, "Fish_mort_acc"], FUN = "*")
-for (compteur in 1:length(Mul_eff)) {
-Catches[, compteur] <- Catches[, compteur] * Mul_eff[compteur]
-}
-}
-
-Y <- apply(Catches, 2, sum) 
-
-if (cas==1){
-Pred_Y <- apply(Catches[(which(rownames(Catches)==TLpred)):(length(BIOM_MF[-1, 1])), ], 2, sum)
-}
-
-if (cas==2){
-Pred_Y <- apply(Catches[(which(rownames(Catches)==TLpred)):(length(BIOM_MF[, 1])), ], 2, sum)
-}
-
-R_TOT_biomass <- TOT_biomass/TOT_biomass["1"]
-R_TOT_biomass_acc <- TOT_biomass_acc/TOT_biomass_acc["1"]
-R_Predat_biom <- Predat_biom/Predat_biom["1"]
-R_TOT_FL <- TOT_FL/TOT_FL["1"]
-R_TOT_FL_acc <- TOT_FL_acc/TOT_FL_acc["1"]
-R_Predat_FL <- Predat_FL/Predat_FL["1"]
-R_Y <- Y/Y["1"]
-R_Pred_Y <- Pred_Y/Pred_Y["1"] 
-TL_TOT_biomass <- apply(sweep(BIOM_MF[-1, ], 1, TL_out[-1], FUN = "*"), 2, sum)/TOT_biomass
-TL_TOT_biomass_acc <- apply(sweep(BIOM_MF_acc[-1, ], 1, TL_out[-1], FUN = "*"), 2, sum)/TOT_biomass_acc
-
-if (cas==1){
-TL_Catches <- apply(sweep(Catches, 1, TL_out[-1], FUN = "*"), 2, sum)/Y
-}
-if (cas==2){
-TL_Catches <- apply(sweep(Catches[-1, ], 1, TL_out[-1], FUN = "*"), 2, sum)/Y
-}
-
-ET_Main_diagnose <- cbind(TOT_biomass, TOT_biomass_acc, Predat_biom, TOT_FL, TOT_FL_acc, Predat_FL, Y, Pred_Y, R_TOT_biomass, R_TOT_biomass_acc, R_Predat_biom, R_TOT_FL, R_TOT_FL_acc, R_Predat_FL, R_Y, R_Pred_Y, TL_TOT_biomass, TL_TOT_biomass_acc, TL_Catches)
-return(list(ET_Main_diagnose = ET_Main_diagnose, BIOM_MF = BIOM_MF, BIOM_MF_acc = BIOM_MF_acc, Catches = Catches, FLOW_MF = FLOW_MF, FLOW_MF_acc = FLOW_MF_acc))
+ FF=unique(FF)
+ comb=as.list(FF)
+ names(comb)=FF
+  
+  for(i in 1:length(comb)){
+    
+    comb[[i]]=list()
+    # 
+    comb[[i]][['mf']]=as.numeric(unlist(strsplit(names(comb)[i],'_')))
+    names(comb[[i]][['mf']])=paste('mf',1:n.fleet,sep='')
+    # F & F_acc
+    mf=as.numeric(comb[[i]][['mf']])
+    if(is.null(Group)){
+      for(j in 1:n.fleet){
+        ff=mf[j]*Fish_mort_ref[[j]]
+        if(j==1){ff.=ff}else{ff.=ff.+ff}
+      }
+    }else{
+      for(j in 1:n.fleet){
+        ff=Fish_mort_gp_ref[[fleet[j]]]
+        if(j==1){f.=ff}else{f.=f.+ff}
+      }
+      for(g in Group){
+        for(j in 1:n.fleet){
+          ff=mf[j]*Fish_mort_gp_ref[[fleet[j]]][,g]
+          if(j==1){f..=ff}else{f..=f..+ff}
+        }
+        f.[,g]=f..
+      }
+      ff.=apply(f.,1,sum)
+    }
+    
+    comb[[i]][['Fish_mort']]=ff.
+    comb[[i]][['Fish_mort_acc']]=ff./ET_Main$Selec
+    
+    # Kin & Kin_acc
+    comb[[i]][['TEMP_Kin']]=ET_Main[,'Kin']-ET_Main[,'Fish_mort']+comb[[i]][['Fish_mort']]
+    comb[[i]][['TEMP_Kin_acc']]=ET_Main[,'Kin_acc']-ET_Main[,'Fish_mort_acc']+comb[[i]][['Fish_mort_acc']]
+    comb[[i]][['Kin_MF']]=comb[[i]][['TEMP_Kin']]
+    comb[[i]][['Kin_MF_acc']]=comb[[i]][['TEMP_Kin_acc']]
+    
+    # FLOW_MF & FLOW_MF_acc
+    comb[[i]][['Prod_MF']]=ET_Main[,'P']
+    comb[[i]][['Prod_MF_acc']]=ET_Main[,'P_acc']
+    
+    # BIOM_MF & BIOM_MF_acc
+    comb[[i]][['BIOM_MF']]=ET_Main[,'B']
+    comb[[i]][['BIOM_MF_acc']]=ET_Main[,'B_acc']
+  }
+  
+  # other arguments of mf.diagnosis
+  tll=names(TL_out[TL_out>=2.8 & TL_out<=3.3])
+  range.TLpred=as.numeric(c(tll[1],tll[length(tll)]))-2
+  high.tl=abs(TL_out-5.6)
+  lim.high.TL=as.numeric(names(high.tl[high.tl==min(high.tl)[1]]))
+  range.highTL=abs(as.numeric(names(TL_out[TL_out %in% 
+     range(TL_out[TL_out>=(TL_out[lim.high.TL]-.9) & TL_out<=round(TL_out[lim.high.TL]-.2,1)])
+   ]))-lim.high.TL)
+  
+  # computation runed on each list element
+  diagn.list=lapply(comb,mf.diagnosis,ET_Main,data$Y,TL_out,fleet,n.fleet,Fish_mort_ref,Fish_mort_acc_ref,B.Input,
+                    Beta,TopD,FormD,TLpred,n.TL,range.TLpred,lim.high.TL,range.highTL,Forag.A,Kfeed,Ponto)
+  # mf.diagnosis(comb[[10]],ET_Main,TL_out,fleet,n.fleet,Fish_mort_ref,Fish_mort_acc_ref,Beta,TopD,FormD,TLpred)
+  names(diagn.list)=names(comb)
+  diagn.list[['fleet.of.interest']]=fleet.of.interest
+  class(diagn.list)<-"ETdiagnosis"
+  return(diagn.list)
 }
