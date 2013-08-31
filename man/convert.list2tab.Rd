@@ -4,7 +4,7 @@
 convert.list2tab
 }
 \description{
-convert.list2tab enables to create a liste of data.frames starting from the list returned by create.ETdiagnosis. These data.frames display variables by trophic level and combination of effort multipliers.
+convert.list2tab enables to convert the list object returned by the create.ETdiagnosis function into a list of data.frames. These data.frames contain calculated variables by TL class and combinations of effort multipliers.
 }
 \usage{
 convert.list2tab(diagn.list)
@@ -12,26 +12,20 @@ convert.list2tab(diagn.list)
 %- maybe also 'usage' for other objects documented here.
 \arguments{
   \item{diagn.list}{
-is the list returned by the create.ETdiagnosis function. 
+is the list object returned by the create.ETdiagnosis function. 
 }
-
 }
 \value{
-This function returns a list of data.frame : B, B_acc, P, P_acc, Kin, Kin_acc, Y, Fish_mort, Fish_mort_acc and ET_Main_diagnose.
-}
-\references{
-Gascuel et al. (2009) EcoTroph (ET): a trophic level based software for assessing the impacts of fishing on aquatic ecosystems.
-Gascuel et al. (2011) The trophic-level-based ecosystem modelling approach: theoretical overview and pratical uses.
-Gasche et Gascuel (unpublished) EcoTroph: a simplified ecosystem model to assess fisheries interactions.
+This function returns a list of data.frames : B, B_acc, P, P_acc, Kin, Kin_acc, Y, Fish_mort, Fish_mort_acc and ET_Main_diagnose.
 }
 \author{
-Colleter Mathieu, Guitton Jerome and Gatti Paul.
+Gatti Paul, Colleter Mathieu, Guitton Jerome.
 }
 
 %% ~Make other sections like Warning with \section{Warning }{....} ~
 
 \seealso{
-create_ETdiagnosis 
+create.ETdiagnosis 
 }
 \examples{
 data(ecopath_guinee)

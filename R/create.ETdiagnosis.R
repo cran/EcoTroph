@@ -1,10 +1,7 @@
 create.ETdiagnosis <- function(data, Mul_eff = NULL, Group = NULL, fleet.of.interest = NULL, same.mE = NULL, B.Input=NULL,
-                      Beta = NULL, TopD = NULL, FormD = NULL, TLpred = NULL, Forag.A = NULL, Kfeed = NULL, Ponto = NULL) 
+                      Beta = NULL, TopD = NULL, FormD = NULL, TLpred = NULL) 
 { 
-#Group=NULL;Mul_eff = NULL;same.mE=T;B.Input=NULL; Beta = NULL; TopD = NULL; FormD = NULL; TLpred = NULL;data=create.ETmain(ecopath_guinee);Kfeed = NULL; Ponto = NULL; Forag.A = F
-#Group=c('Barracudas+','Carangids')
-  #data=create.ETmain(ecopath_guinee,pas=0.1);fleet.of.interest='catch.1'
-  #data=create.ETmain(ecopath_guinee);fleet.of.interest=NULL
+
   ET_Main=data$ET_Main
   
   TL_out <- as.numeric(rownames(ET_Main))
@@ -13,7 +10,7 @@ create.ETdiagnosis <- function(data, Mul_eff = NULL, Group = NULL, fleet.of.inte
   
   #Initialization
   
-  # determinate the number of fleets
+  #Calculates the number of fleets
   fleet=names(data$Y) ; n.fleet=length(fleet)
   
   if (is.null(same.mE)){same.mE <- FALSE}
@@ -28,19 +25,12 @@ create.ETdiagnosis <- function(data, Mul_eff = NULL, Group = NULL, fleet.of.inte
       if(same.mE){Mul_eff.=Mul_eff} 
   }
   if (is.null(B.Input)){B.Input <- FALSE}
-  if (B.Input){Forag.A <- FALSE}# if biomass input control is implemented Foraging arena theory is not.
   if (is.null(Beta)){Beta <- .2}
   if (is.null(TopD)){TopD <- rep(.4,n.TL)}else{if(length(TopD)==1){TopD=rep(TopD,n.TL)}}
   if (is.null(FormD)){FormD <- rep(.5,n.TL)}else{if(length(FormD)==1){FormD=rep(FormD,n.TL)}}
   if (is.null(TLpred)){TLpred <- 3.5}
-  if (is.null(Forag.A)){Forag.A <- FALSE}
-  if (is.null(Kfeed)){Kfeed <- rep(5,n.TL)}else{if(length(Kfeed)==1){Kfeed=rep(Kfeed,n.TL)}}
-  if (is.null(Ponto)){Ponto <- rep(.3,n.TL)}else{if(length(Ponto)==1){Ponto=rep(Ponto,n.TL)}}
-    
-  if(B.Input & Forag.A){Forag.A=FALSE
-    cat('Foraging Arena Theory & Biomass input control cannot be implemented at the same time, Forag.A is repalced by F.')}
-    
-  # Compute reference (initial state) fishing mortality coefficients per fleet and per TL levels
+      
+  #Computes reference (initial state) fishing mortality coefficients per fleet and per TL classes
   Fish_mort_ref=list()
   Fish_mort_acc_ref=list()
   for(i in 1:n.fleet){
@@ -49,12 +39,12 @@ create.ETdiagnosis <- function(data, Mul_eff = NULL, Group = NULL, fleet.of.inte
   }
   for(i in 1:n.fleet){Fish_mort_acc_ref[[i]][is.nan(Fish_mort_acc_ref[[i]])]=0}
   
-  # Compute reference (initial state) fishing mortality coefficients per fleet,per TL levels and TL groups
+  #Computes reference (initial state) fishing mortality coefficients per fleet,per TL classes and groups
   if(!is.null(Group)){
     Fish_mort_gp_ref=list()
     Fish_mort_acc_gp_ref=list()
     for(i in 1:n.fleet){
-      # Gasche et Gascuel (unpublished) (7) Fg,i,t=Yg,i,t/Bt
+      # Gasche et Gascuel (2013) (7) Fg,i,t=Yg,i,t/Bt
       Fish_mort_gp_ref[[fleet[i]]]=data$Y[[fleet[i]]]/ET_Main$B
       Fish_mort_gp_ref[[fleet[i]]][is.nan(Fish_mort_gp_ref[[fleet[i]]])]=0
       Fish_mort_acc_gp_ref[[fleet[i]]]=data$Y[[fleet[i]]]/ET_Main$B_acc
@@ -62,7 +52,7 @@ create.ETdiagnosis <- function(data, Mul_eff = NULL, Group = NULL, fleet.of.inte
     }
   }
   
-# create a list with for each combination of effort multipliers containing all variables (F,Flow,Biom,Kin)
+#Creates a list with for each combination of effort multipliers containing all variables (F,Flow,Biom,Kin)
  
 if(!same.mE){
   ff=expand.grid(Mul_eff.)
@@ -129,18 +119,19 @@ if(!same.mE){
     comb[[i]][['BIOM_MF_acc']]=ET_Main[,'B_acc']
   }
   
-  # other arguments of mf.diagnosis
+  # Other arguments of mf.diagnosis
   tll=names(TL_out[TL_out>=2.8 & TL_out<=3.3])
   range.TLpred=as.numeric(c(tll[1],tll[length(tll)]))-2
   high.tl=abs(TL_out-5.6)
   lim.high.TL=as.numeric(names(high.tl[high.tl==min(high.tl)[1]]))
-  range.highTL=abs(as.numeric(names(TL_out[TL_out %in% 
-     range(TL_out[TL_out>=(TL_out[lim.high.TL]-.9) & TL_out<=round(TL_out[lim.high.TL]-.2,1)])
-   ]))-lim.high.TL)
+  #range.highTL=abs(as.numeric(names(TL_out[TL_out %in% 
+  #range(TL_out[TL_out>=(TL_out[lim.high.TL]-.9) & TL_out<=round(TL_out[lim.high.TL]-.2,1)])]))-lim.high.TL)
+  tlll=names(TL_out[TL_out>=(TL_out[lim.high.TL]-0.5) & TL_out<=(TL_out[lim.high.TL])])
+  range.highTL=as.numeric(c(tlll[1],tlll[length(tlll)]))
   
-  # computation runed on each list element
+  # Computation runned on each list element
   diagn.list=lapply(comb,mf.diagnosis,ET_Main,data$Y,TL_out,fleet,n.fleet,Fish_mort_ref,Fish_mort_acc_ref,B.Input,
-                    Beta,TopD,FormD,TLpred,n.TL,range.TLpred,lim.high.TL,range.highTL,Forag.A,Kfeed,Ponto)
+                    Beta,TopD,FormD,TLpred,n.TL,range.TLpred,lim.high.TL,range.highTL)
   # mf.diagnosis(comb[[10]],ET_Main,TL_out,fleet,n.fleet,Fish_mort_ref,Fish_mort_acc_ref,Beta,TopD,FormD,TLpred)
   names(diagn.list)=names(comb)
   diagn.list[['fleet.of.interest']]=fleet.of.interest

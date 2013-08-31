@@ -2,11 +2,10 @@
 \alias{read.ecopath.model}
 %- Also NEED an '\alias' for EACH other topic documented here.????
 \title{
-read.ecopath.model Function
+Input data import function (from an xml file)
 }
 \description{
-This function read inputs datas from an xml file exported from Ecopath with the Ecotroph plugin or from a web service providing
- inputs for EcopTroph coming from a database populate with parameters of several Ecopath's models.
+This function loads input data from an xml file created by the user, or exported from the EwE EcoTroph plug-in, or from a web service associated to a database populated with parameters of several EwE models.
 }
 \usage{
 read.ecopath.model(filename)
@@ -14,14 +13,11 @@ read.ecopath.model(filename)
 %- maybe also 'usage' for other objects documented here.
 \arguments{
   \item{filename}{
-is the name of the file exported by ecopath.
+is the address of the file the user wants to import.
 }
 }
 \value{
-This function return a data frame containing all the column needed by Ecotroph as input.
-}
-\references{
-Gascuel et al. (2009) EcoTroph (ET): a trophic level based software for assessing the impacts of fishing on aquatic ecosystems.
+This function returns a data.frame containing all the column needed to run the EcoTroph R package.
 }
 \author{
 Colleter Mathieu and Guitton Jerome.
@@ -29,7 +25,7 @@ Colleter Mathieu and Guitton Jerome.
 %% ~Make other sections like Warning with \section{Warning }{....} ~
 
 \seealso{
-create.smooth function to create the Smooth, plot_smooth to plot the smooth function, Transpose to calculate the data transposition into trophic spectra, plot_Transpose to plot the trophic spectra.
+check.table to control the reliability of the dataset.
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.

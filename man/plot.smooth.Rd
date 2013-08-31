@@ -5,7 +5,7 @@
 Plot Smooth Function
 }
 \description{
-plot.smooth is used to plot a smooth function. This function enables the user to see the TL distribution around its mean trophic level.
+plot.smooth is used to plot the Smooth function. This function enables the user to see the TL distributions around their mean trophic levels.
 }
 \usage{
 \method{plot}{smooth}(x,...)
@@ -18,10 +18,7 @@ is the table returned by the create.smooth function.
 \item{\dots}{plot other arguments}
 }
 \value{
-The function returns a plot of the Smooth with the TL classes in absisse.
-}
-\references{
-Gascuel et al. (2009) EcoTroph (ET): a trophic level based software for assessing the impacts of fishing on aquatic ecosystems.
+The function returns a plot of the Smooth with the TL classes in abscissa.
 }
 \author{
 Colleter Mathieu and Guitton Jerome.
@@ -30,7 +27,7 @@ Colleter Mathieu and Guitton Jerome.
 %% ~Make other sections like Warning with \section{Warning }{....} ~
 
 \seealso{
-create.smooth function to create the Smooth, Transpose to calculate the data transposition into trophic spectra, plot_Transpose to plot the trophic spectra.
+create.smooth function to create the Smooth, Transpose to calculate the data transposition into trophic spectra.
 }
 \examples{
 data(ecopath_guinee)

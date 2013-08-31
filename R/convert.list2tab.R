@@ -1,16 +1,7 @@
-#-------------------------------------------------------------------------------
-# convert.list2tab V2.0
-#
-# convertir la liste renvoyée Par create.ET_diagnosis en tableaux
-#-------------------------------------------------------------------------------
-
-#library(EcoTroph);data(ecopath_guinee);source('P:/paul/script/EcoTroph/R/create.ETmain.R');source('P:/paul/script/EcoTroph/R/create.ETdiagnosis.R');source('P:/paul/script/EcoTroph/R/mf.diagnosis.R');source('P:/paul/script/EcoTroph/R/sub.mf.R')
-#Liste=create.ETdiagnosis(create.ETmain(ecopath_guinee),fleet.of.interest='catch.1')
-#Liste=create.ETdiagnosis(create.ETmain(ecopath_guinee),same.mE=T)
-#Liste=create.ETdiagnosis(create.ETmain(ecopath_guinee))
-#ecopath=read.ecopath.model('P:/paul/generic_37.xml');Liste=create.ETdiagnosis(create.ETmain(ecopath))
-#diagn.list=Liste;Tab=convert.list2tab(diagn.list)
-# et=Tab$ET_Main_diagnose
+#--------------------------------------------------------------------------------------------
+# convert.list2tab
+# Convert the list object returned by the create.ETdiagnosis function into data.frame objects
+#--------------------------------------------------------------------------------------------
 
 convert.list2tab=function(diagn.list){
 
@@ -20,7 +11,6 @@ TL=names(diagn.list[[1]]$BIOM_MF)
 
 fleet.of.interest=diagn.list[['fleet.of.interest']]
 if(!is.null(fleet.of.interest)){diagn.list=diagn.list[-length(diagn.list)]}
-#diagn.list=diagn.list[-length(diagn.list)]
 
 nam.liste=names(diagn.list)
 N=length(nam.liste)
@@ -187,7 +177,6 @@ if(n.fleet==1){
     
   } 
 }   
-#write.csv(ET_Main_mf,file='P:/paul/script/EcoTroph/R/tab.list/ET_Main_mE.csv',row.names=FALSE)
 
 #-------------------------------------------------------------------------------
 #---------------------------- 2. ET_Main_diagnose ------------------------------
@@ -314,7 +303,6 @@ if(n.fleet==1){
     #colnames(ET_Main_diagnose)=NULL;row.names(ET_Main_diagnose)=NULL
   }
 }    
-#write.csv(ET_Main_diagnose,file='P:/paul/script/EcoTroph/R/tab.list/ET_Main_diagnose.csv',row.names=FALSE)
 tab=ET_Main_mE
 tab[['ET_Main_diagnose']]=data.frame(ET_Main_diagnose)
 return(tab)

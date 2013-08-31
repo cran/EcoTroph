@@ -5,7 +5,7 @@
 Sigma Saturation Function
 }
 \description{
-This function enables an other calculation for the sigma of the create.smooth function. Sigma is calculated on the base of a saturation function reflecting a biological reasoning about the variability of the TL within the trophic classes: The variability increases with the TL and reaches a plateau after a certain TL.
+This function enables an other calculation for the sigma of the create.smooth function. Sigma is calculated on the base of a saturation function reflecting a biological reasoning about the variability of the TL within trophic classes: the variability increases with the TL and reaches a plateau after a certain TL.
 }
 \usage{
 saturation(sigma_inf = NULL, coeff = NULL, pas = NULL)
@@ -23,13 +23,10 @@ defines the splitting of the TL classes.
 }
 }
 \details{
-By default sigma is calculated using a lognormal function. This function enables an other user choice reflecting a different reasoning.
+By default sigma is constant. This function enables an other user choice reflecting a different reasoning.
 }
 \value{
 saturation returns a vector of values for the sigma used in the create.smooth function.
-}
-\references{
-Gascuel et al. (2009) EcoTroph (ET): a trophic level based software for assessing the impacts of fishing on aquatic ecosystems.
 }
 \author{
 Colleter Mathieu and Guitton Jerome.
@@ -38,7 +35,7 @@ Colleter Mathieu and Guitton Jerome.
 %% ~Make other sections like Warning with \section{Warning }{....} ~
 
 \seealso{
-create.smooth function to create the Smooth, plot_smooth to plot the smooth function, Transpose to calculate the data transposition into trophic spectra, plot_Transpose to plot the trophic spectra.
+create.smooth function to create the Smooth, plot.smooth to plot the smooth function.
 }
 \examples{
 plot(saturation())

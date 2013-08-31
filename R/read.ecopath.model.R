@@ -7,7 +7,7 @@ cat("filname is missing\n")
 }
 else
 {
-library(XML)
+
 
 top <- xmlRoot(xmlTreeParse(filename,useInternalNodes=TRUE))
 xmlName(top)

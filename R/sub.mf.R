@@ -10,18 +10,17 @@ a13.eq.ac=function(compteur,ET_Main,biom.mf,fish.m.ac,TopD,FormD,range.TLpred){
 
 # function used to compute pB for the higest trophic levels
 regPB=function(compteur,pb.mf,TL_out,range.highTL){
-  # pas de 0.1 => range.highTL=c(9,2)
-  x. <- TL_out[(compteur - range.highTL[1]):(compteur - range.highTL[2])]
-  y <- log(pb.mf[(compteur - range.highTL[1]):(compteur - range.highTL[2])])
-  reg <- coef(lm(y ~ x.))
-  reg. <- exp(reg[1] + reg[2] * TL_out[compteur])
-  return(reg.)
+    x. <- TL_out[(range.highTL[1]):(range.highTL[2])]
+    y <- log(pb.mf[(range.highTL[1]):(range.highTL[2])])
+    reg <- coef(lm(y ~ x.))
+    reg. <- exp(reg[1] + reg[2] * TL_out[compteur])
+    return(reg.)
 }
 regPB.ac=function(compteur,pb.mf.ac,TL_out,range.highTL){
-  x. <- TL_out[(compteur - range.highTL[1]):(compteur - range.highTL[2])]
-  y <- log(pb.mf.ac[(compteur - range.highTL[1]):(compteur - range.highTL[2])])
-  #if(fast){reg <- coef(fastLm(y ~ x.))}else{
-  reg <- coef(lm(y ~ x.))
-  reg.ac<- exp(reg[1] + reg[2] * TL_out[compteur])
-  return(reg.ac)
+    x. <- TL_out[(range.highTL[1]):(range.highTL[2])]
+    y <- log(pb.mf.ac[(range.highTL[1]):(range.highTL[2])])
+    #if(fast){reg <- coef(fastLm(y ~ x.))}else{
+    reg <- coef(lm(y ~ x.))
+    reg.ac<- exp(reg[1] + reg[2] * TL_out[compteur])
+    return(reg.ac)
 }

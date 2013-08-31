@@ -1,4 +1,5 @@
-plot.ETdiagnosis <-function(x,scale=NULL,maxrange=NULL,ask=interactive(),...){#,fleet=NULL,fix.mE=NULL
+plot.ETdiagnosis <-function(x,scale=NULL,maxrange=NULL,legend.cex=NULL,ask=interactive(),...){#,fleet=NULL,fix.mE=NULL
+if (is.null(legend.cex)) {legend.cex=0.8}
 
 diagn.list<-x
 par(ask=ask)
@@ -9,7 +10,6 @@ par(ask=ask)
   if(!is.null(fleet.of.interest)){diagn.list=diagn.list[-length(diagn.list)]}
 
 scale <- if(is.null(scale)) '' else 'y' #the scale parameter can be log or not for the y axis of the BTS
-# scale2 <- if(is.null(scale2)) '' else 'y' #the scale parameter can be log or not for the y axis of the PTS
 if(is.null(maxrange)) maxrange<-5.5
 #if(is.null(fix.mE)) fix.mE<-1
 
@@ -62,7 +62,7 @@ ymax=max(m1[,1:3],na.rm=T)
 plot(rownames(m1),m1[,"R_TOT_B"],col=2,type='l',ylim=c(0,ymax),xlab="mE",ylab="",...)
 lines(rownames(m1),m1[,"R_TOT_B_acc"],type='l',col=3)
 lines(rownames(m1),m1[,"R_Pred_B"],type='l',col=1)
-legend(max(mf)+.5,ymax,legend = c("R_TOT_B","R_TOT_B_acc","R_Pred_B"), bg = 'gray90',col=c(2,3,1),pch=1,xpd=NA)
+legend(max(mf)+.5,ymax,legend = c("R_TOT_B","R_TOT_B_acc","R_Pred_B"), bg = 'gray90',col=c(2,3,1),pch=1,xpd=NA,cex=legend.cex)
 
 #x11()# relative Catches
 par(mar=c(5,3,1,11))
@@ -75,12 +75,12 @@ for(i in 1:length(mf)){
 
 m.=cbind(m1[,c("R_Y","R_Pred_Y")],m.)
 ymax=max(m.,na.rm=T)
-plot(rownames(m.),m.[,"R_Y"],col=4,type='l',ylim=c(0,ymax),xlab="mE",ylab="")
+plot(rownames(m.),m.[,"R_Y"],col=4,type='l',ylim=c(0,ymax),xlab="mE",ylab="",...)
 lines(rownames(m.),m.[,"R_Pred_Y"],type='l',col=3)
 
 for(j in 1:n.fleet){lines(as.numeric(mf),m.[,(2+j)],col=4+j)}
 leg=paste('R_Y_',Nam.fleet,sep='')
-legend(max(mf)+.5,ymax,legend = c("R_Y",leg,"R_Pred_Y"), bg = 'gray90',col=c(4:(4+n.fleet),3),pch=1,xpd=NA)
+legend(max(mf)+.5,ymax,legend = c("R_Y",leg,"R_Pred_Y"), bg = 'gray90',col=c(4:(4+n.fleet),3),pch=1,xpd=NA,cex=legend.cex)
 
 # mean TL in biomass
 m2=data.frame(matrix(data=NA,ncol=3,nrow=length(mf)))
@@ -93,7 +93,7 @@ for(i in 1:length(mf)){
 par(mar=c(5,4.5,1,9))
 plot(rownames(m2),m2[,"TL_TOT_B"],col=2,type='l',ylim=c(1,4),xlab="mE",ylab="TL",...)
 lines(rownames(m2),m2[,"TL_TOT_B_acc"],type='l',col=4)
-legend(max(mf)+.5,4,legend = c("TL_TOT_B","TL_TOT_B_acc"), bg = 'gray90',col=c(2,4),pch=1,xpd=NA)
+legend(max(mf)+.5,4,legend = c("TL_TOT_B","TL_TOT_B_acc"), bg = 'gray90',col=c(2,4),pch=1,xpd=NA,cex=legend.cex)
 
 #x11() # mean TL in catches
 par(mar=c(5,4.5,1,10))
@@ -120,7 +120,7 @@ for(i in 1:length(mf)){
 }
 for(j in 1:n.fleet){lines(rownames(m2),m2.[,j],col=12+j)}
   leg=c("TL_Y",paste('TL_Y_',Nam.fleet,sep=''))
-  legend(max(mf)+.5,4,legend = leg, bg = 'gray90',col=c(12,13:(13+n.fleet-1)),pch=1,xpd=NA)}
+  legend(max(mf)+.5,4,legend = leg, bg = 'gray90',col=c(12,13:(13+n.fleet-1)),pch=1,xpd=NA,cex=legend.cex)}
 
 m3=data.frame(matrix(data=NA,ncol=length(mf),nrow=length(TL_out)))
 colnames(m3)=mf;row.names(m3)=TL_out
@@ -132,7 +132,7 @@ ymax=max(m3[2:length(rownames(m3)),1])
 plot(rownames(m3),m3[,1],log=scale,col=1,type='l',bg='gray',axes=T,ylab="Biomasses",xlab="TL",ylim=c(0.010,ymax),xlim=c(2,maxrange),...)
 for (i in 2:length(colnames(m3)))
 lines(TL_out,m3[,i],col=i,type='l')
-legend(maxrange+.5,ymax,legend = colnames(m3), bg = 'gray90',col=c(1:length(colnames(m3))),pch=1,xpd=NA)
+legend(maxrange+0.2,ymax,legend = colnames(m3), bg = 'gray90',col=c(1:length(colnames(m3))),pch=1,xpd=NA,cex=legend.cex)
   
 
 tl=seq(2.5,5,.5)
@@ -150,9 +150,9 @@ mm <- rbind(TL_2.5,TL_3,TL_3.5,TL_4,TL_4.5,TL_5)
 #x11()
 par(mar=c(5,4.5,1,5))
 ymax=min(5,max(mm,na.rm=T))
-plot(colnames(mm),mm[1,],col=1,type='l',ylim=c(0,ymax),xlab="mE",ylab="B/Bref")
+plot(colnames(mm),mm[1,],col=1,type='l',ylim=c(0,ymax),xlab="mE",ylab="B/Bref",...)
 for (i in 2:length(rownames(mm)))lines(colnames(mm),mm[i,],col=i,type='l')
-legend(max(mf)+.5,ymax,legend = rownames(mm), bg = 'gray90',col=c(1:length(rownames(mm))),pch=1,xpd=NA)
+legend(max(mf)+.2,ymax,legend = rownames(mm), bg = 'gray90',col=c(1:length(rownames(mm))),pch=1,xpd=NA,cex=legend.cex)
     
 
 refY=Ref$Catches.tot[names(Ref$Catches.tot)%in%tl.]
@@ -166,7 +166,7 @@ par(mar=c(5,4.5,1,5))
 ymax=max(my,na.rm=T)
 plot(row.names(my),my[,1],col=1,type='l',ylim=c(0,ymax),xlab="mE",ylab="Y/Yref per TL",...)
 for (i in 2:length(colnames(my)))lines(row.names(my),my[,i],col=i,type='l')
-legend(max(mf)+.5,ymax,legend = colnames(my), bg = 'gray90',col=c(1:length(colnames(my))),pch=1,xpd=NA)
+legend(max(mf)+.2,ymax,legend = colnames(my), bg = 'gray90',col=c(1:length(colnames(my))),pch=1,xpd=NA,cex=legend.cex)
 
  
 m4=data.frame(matrix(data=NA,ncol=length(mf),nrow=length(TL_out)))
@@ -179,7 +179,7 @@ ymax=max(m4,na.rm=T)
 plot(TL_out,m4[,length(colnames(m4))],col=length(colnames(m4)),type='l',bg='gray',axes=T,ylab="Total Catches",xlab="TL",ylim=c(0,ymax),xlim=c(2,maxrange),...)
 for (i in 1:(length(colnames(m4))-1))
   lines(TL_out,m4[,i],col=i,type='l')
-legend(maxrange+.5,ymax,legend = colnames(m3), bg = 'gray90',col=c(1:length(colnames(m4))),xpd=NA,pch=1)
+legend(maxrange+.2,ymax,legend = colnames(m3), bg = 'gray90',col=c(1:length(colnames(m4))),xpd=NA,pch=1,cex=legend.cex)
 
 if(!n.fleet==1){
 for(j in 1:n.fleet){
@@ -195,7 +195,7 @@ ymax=max(m6,na.rm=T)
 plot(TL_out,m6[,length(colnames(m6))],col=length(colnames(m6)),type='l',bg='gray',axes=T,ylab=paste("Catches of fleet ",Nam.fleet[j],sep=''),xlab="TL",ylim=c(0,ymax),xlim=c(2,maxrange),...)
 for (i in 1:(length(colnames(m6))-1))
   lines(rownames(m6),m6[,i],col=i,type='l')
-legend(maxrange+.5,ymax,legend = colnames(m3), bg = 'gray90',col=c(1:length(colnames(m6))),xpd=NA,pch=1)
+legend(maxrange+.2,ymax,legend = colnames(m3), bg = 'gray90',col=c(1:length(colnames(m6))),xpd=NA,pch=1,cex=legend.cex)
 }
 }
   

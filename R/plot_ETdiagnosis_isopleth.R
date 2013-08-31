@@ -15,7 +15,7 @@ par(ask=ask)
       if(is.null(name.fleet2)){y.lab='fleet 2'}else{y.lab=name.fleet2}
   }else{x.lab='fleet(s) of interest';y.lab='other fleet(s)' }
   if(is.null(n.level)){n.level=7}
-  if(is.null(color)) color=rainbow((n.level-1))#rev(gray(seq(0,1,1/(levels-1))))#
+  if(is.null(color)) color=rainbow((n.level-1))#rev(gray(seq(0,1,1/(levels-1))))
   # find each combination of diagnlist to conserve
   
   # fleets
@@ -50,8 +50,9 @@ par(ask=ask)
   # renommer la liste pour trouver les bonnes combinaisons
   N=cbind(nam,nl.);row.names(N)=NULL;N=data.frame(N)
   ll=diagn.list[names(diagn.list)%in%nam]
-  nll=names(ll)
-  for(n in 1:length(nll)){names(ll[n])=as.character(N[N$nam==nll[n],'nl.'])}
+  #nll=names(ll)
+  #for(n in 1:length(nll)){names(ll[n])=as.character(N[N$nam==nll[n],'nl.'])}
+  names(ll)<-N[match(N$nam,names(ll)),]$nl.
   
   # create a matrix for each variable and then plot an ispoleth
   x=mf;y=mf

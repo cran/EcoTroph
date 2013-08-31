@@ -19,23 +19,19 @@ Emsy=function(TL,Y,Fish_mort){
   return(as.numeric(emsy))
 }
 
-E_MSY_0.1=function(data,Mul_eff=NULL,B.Input=NULL,Beta=NULL,TopD=NULL,FormD=NULL,TLpred=NULL,Forag.A=NULL,Kfeed=NULL,Ponto=NULL,maxTL=NULL){
+E_MSY_0.1=function(data,Mul_eff=NULL,B.Input=NULL,Beta=NULL,TopD=NULL,FormD=NULL,TLpred=NULL,maxTL=NULL){
   #data=create.ETmain(ecopath_guinee)
-  #Mul_eff=NULL;B.Input=NULL;Beta=NULL;TopD=NULL;FormD=NULL;TLpred=NULL;Forag.A=NULL;Kfeed=NULL;Ponto=NULL;maxTL=NULL
+  #Mul_eff=NULL;B.Input=NULL;Beta=NULL;TopD=NULL;FormD=NULL;TLpred=NULL;maxTL=NULL
   n.TL=nrow(data$ET_Main)
   if (is.null(Mul_eff)){Mul_eff=seq(0,10,.1)}
   if (is.null(B.Input)){B.Input <- FALSE}
-  if (B.Input){Forag.A <- FALSE}# if biomass input control is implemented Foraging arena theory is not.
   if (is.null(Beta)){Beta <- 0.2}
   if (is.null(TopD)){TopD <- rep(.4,n.TL)}else{if(length(TopD)==1){TopD=rep(TopD,n.TL)}}
   if (is.null(FormD)){FormD <- rep(.5,n.TL)}else{if(length(FormD)==1){FormD=rep(FormD,n.TL)}}
   if (is.null(TLpred)){TLpred <- 3.5}
-  if (is.null(Forag.A)){Forag.A <- FALSE}
-  if (is.null(Kfeed)){Kfeed <- rep(5,n.TL)}else{if(length(Kfeed)==1){Kfeed=rep(Kfeed,n.TL)}}
-  if (is.null(Ponto)){Ponto <- rep(.3,n.TL)}else{if(length(Ponto)==1){Ponto=rep(Ponto,n.TL)}}
   if (is.null(maxTL)){maxTL=5.5}
   
-  diagn.list=create.ETdiagnosis(data=data,Mul_eff=Mul_eff,B.Input=B.Input,Beta=Beta,TopD=TopD,FormD=FormD,TLpred=TLpred,same.mE=T,Forag.A=Forag.A,Kfeed=Kfeed,Ponto=Ponto)
+  diagn.list=create.ETdiagnosis(data=data,Mul_eff=Mul_eff,B.Input=B.Input,Beta=Beta,TopD=TopD,FormD=FormD,TLpred=TLpred,same.mE=T)
   fleet.of.interest=diagn.list[['fleet.of.interest']]
   if(!is.null(fleet.of.interest)){diagn.list=diagn.list[-length(diagn.list)]}
   names(diagn.list)=Mul_eff
@@ -53,17 +49,12 @@ E_MSY_0.1=function(data,Mul_eff=NULL,B.Input=NULL,Beta=NULL,TopD=NULL,FormD=NULL
   colnames(MSY_0.1)=c('F_MSY','E_MSY','F_0.1','E_0.1')
   MSY_0.1=as.data.frame(MSY_0.1)
   
-  # filtrage, si E_MSY=max(Mul_eff)=> NA
+  # Control, if E_MSY=max(Mul_eff)=> NA
   msy.na=rownames(MSY_0.1[MSY_0.1$E_MSY==max(Mul_eff) & !is.na(MSY_0.1$E_MSY),])
   if(!length(msy.na)==0){MSY_0.1[row.names(MSY_0.1)%in%msy.na,c(1,2)]=matrix(data=NA,ncol=2,nrow=length(msy.na))}
-  # filtrage E_0.1
+  # Control E_0.1
   m01.na=rownames(MSY_0.1[MSY_0.1$E_0.1==max(Mul_eff) & !is.na(MSY_0.1$E_0.1),])
   if(!length(m01.na)==0){MSY_0.1[row.names(MSY_0.1)%in%m01.na,c(1,2)]=matrix(data=NA,ncol=2,nrow=length(m01.na))}
 
   MSY_0.1=MSY_0.1[as.numeric(row.names(MSY_0.1))<=maxTL,] 
 return(MSY_0.1)}
-
-# a=c(29.851464,0.732437011,2.896177,1.384596) # test avec pas de 0.1 pour les TL 2 2.6 3 3.6
-# b=c(30.59479,0.7826261,2.972198,1.474088)   # test avec pas de 0.01
-#(a-b)/a*100
-#[1] -2.490082 -6.852342 -2.624874 -6.463402
